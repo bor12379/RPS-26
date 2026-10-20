@@ -53,6 +53,32 @@ else:
     print(round(tuje, 2), valuta, "=", round(nazaj, 2), "EUR")
 
 
+#vaja 3 
+
+import requests
+
+url = "https://api.frankfurter.dev/v1/2026-09-01..2026-09-07"
+podatki = requests.get(url, params={"symbols": "USD"}).json()
+dnevi = podatki["rates"]          # datum -> {"USD": tečaj}
+
+datumi = list(dnevi.keys())       # seznam, da lahko uporabljamo indekse
+
+# prvi dan nima prejšnjega, zato ga izpišemo posebej
+print(datumi[0] + ":", dnevi[datumi[0]]["USD"])
+
+for i in range(1, len(datumi)):
+    danes = dnevi[datumi[i]]["USD"]
+    vceraj = dnevi[datumi[i - 1]]["USD"]
+
+    if danes > vceraj:
+        smer = "gor"
+    else:
+        smer = "dol"
+
+    print(datumi[i] + ":", danes, "(" + smer + ")")
+
+print("Podatki od", datumi[0], "do", datumi[-1] + ", skupaj", len(datumi), "dni")
+
 
 
 
